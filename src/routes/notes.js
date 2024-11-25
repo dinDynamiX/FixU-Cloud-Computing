@@ -9,7 +9,7 @@ router.get('/', notesControllers.getAllNotes);
 router.get('/add', notesControllers.addNewNote);
 router.post('/add', notesControllers.createNewNotes);
 
-router.patch('/update/:id', notesControllers.updateNote);
-router.delete('/:id', notesControllers.deleteNote);
+router.patch('/update/:idNote', notesControllers.updateNote);
+router.delete('/:idNote', notesControllers.deleteNote);
 
 module.exports = router;

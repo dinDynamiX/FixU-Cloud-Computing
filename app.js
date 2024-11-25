@@ -13,12 +13,12 @@ const notesRoutes = require('./src/routes/notes');
 app.use(middlewareLogRequest);
 app.use(express.json());
 
-app.use('/notes', notesRoutes);
-
 // Endpoint
 app.get('/', (req, res) => {
   res.send('Welcome to Fixu API');
 });
+
+app.use('/notes', notesRoutes);
 
 // Jalankan server
 app.listen(PORT, () => {
