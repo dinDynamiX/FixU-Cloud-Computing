@@ -1,13 +1,18 @@
-const getAllNotes = (req, res) => {
-  const data = {
-    id: '1',
-    title: 'Aku terbully',
-    content: 'awkoakwokaowkaokwoak terbully',
-  };
-  res.json({
-    message: 'get notes success',
-    data,
-  });
+const notesModel = require('../models/notes');
+
+const getAllNotes = async (req, res) => {
+  try {
+    const [data] = await notesModel.getAllNotes();
+    res.json({
+      message: 'get notes success',
+      data: data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Server Error',
+      serverMessage: error,
+    });
+  }
 };
 
 const addNewNote = (req, res) => {

@@ -6,6 +6,8 @@ const PORT = process.env.PORT || 3000;
 
 const notesRoutes = require('./src/routes/notes');
 
+// const db = require('./src/config/db');
+
 app.use(middlewareLogRequest);
 app.use(express.json());
 
