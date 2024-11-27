@@ -18,7 +18,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/notes', notesRoutes);
-app.use('/diagnose', diagnoseRoutes);
+app.use('/features', diagnoseRoutes);
+app.use('/predict', diagnoseRoutes);
 
 // Jalankan server
 app.listen(PORT, () => {
