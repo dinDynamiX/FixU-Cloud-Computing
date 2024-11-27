@@ -7,8 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 const notesRoutes = require('./src/routes/notes');
-
-// const db = require('./src/config/db');
+const diagnoseRoutes = require('./src/routes/diagnose');
 
 app.use(middlewareLogRequest);
 app.use(express.json());
@@ -19,6 +18,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/notes', notesRoutes);
+app.use('/diagnose', diagnoseRoutes);
 
 // Jalankan server
 app.listen(PORT, () => {

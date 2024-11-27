@@ -3,7 +3,7 @@ const notesModel = require('../models/notes.js');
 const getAllNotes = async (req, res) => {
   try {
     const [data] = await notesModel.getAllNotes();
-    res.json({
+    res.status(200).json({
       message: 'get notes success',
       data: data,
     });
@@ -16,7 +16,7 @@ const getAllNotes = async (req, res) => {
 };
 
 const addNewNote = (req, res) => {
-  res.json({
+  res.status(200).json({
     message: 'Get Halaman Add notes',
   });
 };
@@ -24,9 +24,15 @@ const addNewNote = (req, res) => {
 const createNewNotes = async (req, res) => {
   const { body } = req;
 
+  if (!body.title || !body.content) {
+    return res.status(400).json({
+      message: 'Mohon lengkapi data input',
+    });
+  }
+
   try {
     await notesModel.createNewNotes(body);
-    res.json({
+    res.status(201).json({
       message: 'Post notes success',
       data: body,
     });
