@@ -12,7 +12,7 @@ const getAllFormStudent = () => {
 const predictModelStudent = async (payload) => {
   try {
     const response = await axios.post(
-      'https://fixu-api-1045437150026.asia-southeast2.run.app/predict/student',
+      'endpoint_ml',
       payload
     );
     return response.data; // Kembalikan data dari API eksternal
@@ -49,7 +49,7 @@ const predictModelStudent = async (payload) => {
 const predictModelProfessional = async (payload) => {
   try {
     const response = await axios.post(
-      'https://fixu-api-1045437150026.asia-southeast2.run.app/predict/professional',
+      'endpoint_ml',
       payload
     );
     return response.data; // Kembalikan data dari API eksternal
