@@ -1,0 +1,71 @@
+Contoh endpoint untuk mengambil data riwayat diagnosis berdasarkan UID Firebase:
+javascript
+Salin kode
+const express = require('express');
+const app = express();
+
+app.use(express.json());
+
+// Middleware untuk memverifikasi Firebase ID Token
+async function verifyToken(req, res, next) {
+    const idToken = req.headers.authorization?.split('Bearer ')[1];
+    if (!idToken) return res.status(401).send('Unauthorized');
+
+    try {
+        const decodedToken = await admin.auth().verifyIdToken(idToken);
+        req.user = decodedToken;
+        next();
+    } catch (error) {
+        return res.status(401).send('Invalid Token');
+    }
+}
+
+// Endpoint untuk mendapatkan data riwayat
+app.get('/history', verifyToken, (req, res) => {
+    const userUid = req.user.uid;
+
+    db.query('SELECT * FROM history WHERE uuid = ?', [userUid], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Database Error');
+        }
+        res.json(results);
+    });
+});
+
+app.listen(3000, () => {
+    console.log('Server running on port 3000');
+});
+
+
+
+My Sql : database
+
+CREATE TABLE history (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    uuid VARCHAR(255) NOT NULL,
+    feedback TEXT,
+    probability FLOAT,
+    result TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+contoh ENV menggunakan cloud storage dan cloud running
+# Port untuk aplikasi (Cloud Run biasanya mengatur port secara otomatis)
+PORT = 8080 
+
+# Database Configuration
+DB_HOST = /cloudsql/<PROJECT_ID>:<REGION>:<INSTANCE_NAME>
+DB_USERNAME = <DB_USERNAME>
+DB_PASSWORD = <DB_PASSWORD>
+DB_NAME = <DB_NAME>
+
+# Cloud Storage Configuration (misalnya untuk akses bucket di Google Cloud Storage)
+GOOGLE_APPLICATION_CREDENTIALS = /path/to/your/service-account-file.json
+
+# Bucket name untuk Google Cloud Storage
+GCLOUD_STORAGE_BUCKET = <your-storage-bucket-name>
+
+# API keys atau konfigurasi lainnya jika diperlukan
+API_KEY = <your-api-key-if-any>
