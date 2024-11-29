@@ -9,8 +9,8 @@ const getAllNotes = () => {
 
 // Membuat Data Note
 const createNewNotes = (body) => {
-  const SQLQuery = `INSERT INTO notes (title, content) VALUES (?, ?)`;
-  return db.execute(SQLQuery, [body.title, body.content]);
+  const SQLQuery = `INSERT INTO notes (uid, title, content) VALUES (?, ?, ?)`;
+  return db.execute(SQLQuery, [body.uid, body.title, body.content]);
 };
 
 // Mencari Data Note berdasarkan ID

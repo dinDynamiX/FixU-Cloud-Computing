@@ -5,12 +5,10 @@ const middlewareLogRequest = require('./src/middleware/logs');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
-
 const authRoutes = require('./src/routes/authRoute');
 const authenticate = require('./src/middleware/authentication');
 
-const notesRoutes = require('./src/routes/notes');
+const notesRoutes = require('./src/routes/notesRoute');
 const diagnoseRoutes = require('./src/routes/diagnose');
 
 app.use(middlewareLogRequest);

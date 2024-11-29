@@ -1,4 +1,4 @@
-const notesModel = require('../models/notes.js');
+const notesModel = require('../models/notesModel.js');
 
 const getAllNotes = async (req, res) => {
   try {
@@ -24,7 +24,7 @@ const addNewNote = (req, res) => {
 const createNewNotes = async (req, res) => {
   const { body } = req;
 
-  if (!body.title || !body.content) {
+  if (!body.uid || !body.title || !body.content) {
     return res.status(400).json({
       message: 'Mohon lengkapi data input',
     });
@@ -47,6 +47,7 @@ const createNewNotes = async (req, res) => {
 const updateNote = async (req, res) => {
   const { idNote } = req.params;
   const { body } = req;
+
   try {
     const [rows] = await notesModel.findNoteById(idNote);
 
@@ -56,11 +57,23 @@ const updateNote = async (req, res) => {
       });
     }
 
+    // Validasi: Tidak boleh ada nilai null
+    const isNullValue = Object.values(body).some(
+      (value) => value === null || value === 0 || value === ''
+    );
+
+    if (isNullValue) {
+      return res.status(400).json({
+        message: 'Mohon kolom nya dilengkapi',
+      });
+    }
+
+    // Lakukan update jika lolos validasi
     await notesModel.updateNote(body, idNote);
 
     res.json({
-      message: 'Update Note',
-      data: req.body,
+      message: 'Update Note berhasil',
+      data: body,
     });
   } catch (error) {
     console.error('Error updating note:', error);
