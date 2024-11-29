@@ -122,16 +122,21 @@ const sendFeedback = async (req, res) => {
 
 const getAllHistory = async (req, res) => {
   try {
-    const uuid = req.uuid;
-    const [data] = await diagnoseModel.getAllHistoryDiagnose(uuid);
+    const uid = req.user?.uid; // Pastikan middleware mengisi req.user
+    if (!uid) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const [data] = await diagnoseModel.getAllHistoryDiagnose(uid);
+
     res.status(200).json({
-      message: 'get History success',
+      message: 'Get History Success',
       data: data,
     });
   } catch (error) {
     res.status(500).json({
       message: 'Server Error',
-      serverMessage: error,
+      serverMessage: error.message,
     });
   }
 };

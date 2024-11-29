@@ -90,9 +90,9 @@ const savePredictionProfessionalToHistory = (feedback, probability, result) => {
 //   ]);
 // };
 
-const getAllHistoryDiagnose = () => {
-  const SQLQuery = `SELECT * FROM history`;
-  return db.execute(SQLQuery);
+const getAllHistoryDiagnose = (uid) => {
+  const SQLQuery = `SELECT * FROM history WHERE uid = ?`;
+  return db.execute(SQLQuery, [uid]);
 };
 
 module.exports = {

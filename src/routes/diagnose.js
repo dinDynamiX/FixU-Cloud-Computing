@@ -16,7 +16,6 @@ router.post(
 );
 
 router.get('/', diagnoseControllers.getAllHistory);
-
 //Professional
 // router.get('/features/professional', diagnoseControllers.getAllFormStudent);
 // router.post('/predict/professional', diagnoseControllers.createNewNotes);

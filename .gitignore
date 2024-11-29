@@ -4,6 +4,7 @@
 
 # Firebase service account credentials (or any other service account keys)
 serviceAccountKey.json.json
+serviceAccountKey.json
 
 # Logs
 npm-debug.log*
@@ -15,3 +16,5 @@ Thumbs.db
 # IDE files
 .idea/
 .vscode/
+
+package-lock.json
