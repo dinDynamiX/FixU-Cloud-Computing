@@ -9,7 +9,7 @@ const authRoutes = require('./src/routes/authRoute');
 const authenticate = require('./src/middleware/authentication');
 
 const notesRoutes = require('./src/routes/notesRoute');
-const diagnoseRoutes = require('./src/routes/diagnose');
+const diagnoseRoutes = require('./src/routes/diagnoseRoute');
 
 app.use(middlewareLogRequest);
 app.use(express.json());

@@ -1,29 +1,12 @@
-const diagnoseModel = require('../models/diagnose');
-
-const getAllFormStudent = async (req, res) => {
-  try {
-    const [data] = await diagnoseModel.getAllFormStudent();
-    res.status(200).json({
-      message: 'get Form success',
-      data: data,
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: 'Server Error',
-      serverMessage: error,
-    });
-  }
-};
-
-// const storeAnswerStudentForm = (req, res) => {};
+const diagnoseModel = require('../models/diagnoseModel');
 
 //Predict Model Student
 const predictModelStudent = async (req, res) => {
   try {
-    // Ambil data dari request body
-    const payload = req.body;
+    // Pisahkan `uid` dari `req.body`
+    const { uid, ...payload } = req.body;
 
-    // Validasi apakah body kosong
+    // Validasi apakah payload kosong
     if (!payload || Object.keys(payload).length === 0) {
       return res
         .status(400)
@@ -31,26 +14,30 @@ const predictModelStudent = async (req, res) => {
     }
 
     // Kirim data ke model untuk melakukan prediksi
-    const result = await diagnoseModel.predictModelStudent(payload);
+    const predictionResult = await diagnoseModel.predictModelStudent(payload);
 
-    // Ambil feedback, probability, dan result dari response
-    const { feedback, probability, result: predictionResult } = result;
+    const { feedback, probability, result } = predictionResult;
 
-    // Simpan feedback ke dalam tabel feedback
-    await diagnoseModel.storePredictionFeedbackStudent(
-      feedback,
-      probability,
-      predictionResult
-    );
+    // Kirim `uid` dan hasil prediksi ke `sendFeedback`
+    if (uid) {
+      await diagnoseModel.sendFeedback({
+        uid,
+        feedback,
+        probability,
+        result,
+      });
+    } else {
+      console.warn('UID not provided, feedback not sent.');
+    }
 
     // Kembalikan hasil prediksi
     res.status(200).json({
       message: 'Prediction successful.',
-      result,
+      result: predictionResult,
     });
   } catch (error) {
     // Tangani error
-    console.error(error);
+    console.error('Error during prediction:', error);
     res.status(500).json({
       message: 'Error during prediction.',
       error: error.message,
@@ -142,7 +129,6 @@ const getAllHistory = async (req, res) => {
 };
 
 module.exports = {
-  getAllFormStudent,
   sendFeedback,
   getAllHistory,
   predictModelStudent,
