@@ -2,15 +2,22 @@ const notesModel = require('../models/notesModel.js');
 
 const getAllNotes = async (req, res) => {
   try {
-    const [data] = await notesModel.getAllNotes();
+    const uid = req.user?.uid; // uid diambil dari middleware
+    console.log('User UID:', uid); // Debug UID
+    if (!uid) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const [data] = await notesModel.getAllNotes(uid);
+
     res.status(200).json({
-      message: 'get notes success',
+      message: 'Get History Success',
       data: data,
     });
   } catch (error) {
     res.status(500).json({
       message: 'Server Error',
-      serverMessage: error,
+      serverMessage: error.message,
     });
   }
 };

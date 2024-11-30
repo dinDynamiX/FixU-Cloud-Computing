@@ -51,7 +51,7 @@ const sendFeedback = (body) => {
 };
 
 const getAllHistoryDiagnose = (uid) => {
-  const SQLQuery = `SELECT * FROM history WHERE uid = ?`;
+  const SQLQuery = `SELECT * FROM feedback WHERE uid = ?`;
   return db.execute(SQLQuery, [uid]);
 };
 

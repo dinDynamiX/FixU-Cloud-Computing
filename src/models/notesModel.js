@@ -1,10 +1,9 @@
 const db = require('../config/db');
 
 // Get Data Note
-const getAllNotes = () => {
-  const SQLQuery = 'SELECT * FROM notes';
-
-  return db.execute(SQLQuery);
+const getAllNotes = (uid) => {
+  const SQLQuery = `SELECT * FROM notes WHERE uid = ?`;
+  return db.execute(SQLQuery, [uid]);
 };
 
 // Membuat Data Note

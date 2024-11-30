@@ -110,12 +110,13 @@ const sendFeedback = async (req, res) => {
 
 const getAllHistory = async (req, res) => {
   try {
-    const uid = req.user?.uid; // Pastikan middleware mengisi req.user
+    const uid = req.user?.uid;
     if (!uid) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
 
     const [data] = await diagnoseModel.getAllHistoryDiagnose(uid);
+    console.log(uid);
 
     res.status(200).json({
       message: 'Get History Success',

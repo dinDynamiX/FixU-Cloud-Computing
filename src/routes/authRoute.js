@@ -67,7 +67,7 @@ router.post('/login', async (req, res) => {
         whatsapp: user.customClaims?.whatsapp || null,
       },
       JWT_SECRET_KEY, // Secret key to sign JWT
-      { expiresIn: '1h' } // Token will expire in 1 hour
+      { expiresIn: '5h' }
     );
 
     res.status(200).json({
