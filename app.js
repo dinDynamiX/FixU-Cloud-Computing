@@ -26,19 +26,6 @@ app.use('/history', authenticate, diagnoseRoutes);
 
 app.use('/auth', authRoutes);
 
-// Protected route example
-app.get('/protected', authenticate, (req, res) => {
-  res.status(200).json({
-    message: 'Authorized access.',
-    user: {
-      uid: req.user.uid,
-      email: req.user.email,
-      fullname: req.user.fullname,
-      whatsapp: req.user.whatsapp,
-    },
-  });
-});
-
 // Jalankan server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

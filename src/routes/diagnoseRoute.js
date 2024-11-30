@@ -7,7 +7,6 @@ const diagnoseControllers = require('../controllers/diagnoseControllers');
 router.get('/', diagnoseControllers.getAllHistory);
 
 ///Student
-
 router.post('/student/result', diagnoseControllers.predictModelStudent);
 
 //Professional
