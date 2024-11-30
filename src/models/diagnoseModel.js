@@ -25,7 +25,10 @@ const predictModelStudent = async (payload) => {
 //API Model Predict Professional
 const predictModelProfessional = async (payload) => {
   try {
-    const response = await axios.post('endpoint_ml', payload);
+    const response = await axios.post(
+      'https://fixu-api-1045437150026.asia-southeast2.run.app/predict/professional',
+      payload
+    );
     return response.data; // Kembalikan data dari API eksternal
   } catch (error) {
     throw new Error(

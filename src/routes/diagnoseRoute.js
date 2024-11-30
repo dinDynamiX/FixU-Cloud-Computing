@@ -12,7 +12,7 @@ router.post('/student/result', diagnoseControllers.predictModelStudent);
 
 //Professional
 router.post(
-  '/result/professional',
+  '/professional/result',
   diagnoseControllers.predictModelProfessional
 );
 

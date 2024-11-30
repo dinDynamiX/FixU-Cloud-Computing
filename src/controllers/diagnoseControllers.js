@@ -45,13 +45,12 @@ const predictModelStudent = async (req, res) => {
   }
 };
 
-//Predict Model Professional
 const predictModelProfessional = async (req, res) => {
   try {
-    // Ambil data dari request body
-    const payload = req.body;
+    // Pisahkan `uid` dari `req.body`
+    const { uid, ...payload } = req.body;
 
-    // Validasi apakah body kosong
+    // Validasi apakah payload kosong
     if (!payload || Object.keys(payload).length === 0) {
       return res
         .status(400)
@@ -59,30 +58,32 @@ const predictModelProfessional = async (req, res) => {
     }
 
     // Kirim data ke model untuk melakukan prediksi
-    const resultPrediction = await diagnoseModel.predictModelProfessional(
+    const predictionResult = await diagnoseModel.predictModelProfessional(
       payload
     );
 
-    // Simpan hasil prediksi ke dalam tabel history
-    const {
-      feedback,
-      probability,
-      result: predictionResult,
-    } = resultPrediction; // Sesuaikan dengan hasil dari API prediksi
-    await diagnoseModel.savePredictionProfessionalToHistory(
-      feedback,
-      probability,
-      predictionResult
-    );
+    const { feedback, probability, result } = predictionResult;
+
+    // Kirim `uid` dan hasil prediksi ke `sendFeedback`
+    if (uid) {
+      await diagnoseModel.sendFeedback({
+        uid,
+        feedback,
+        probability,
+        result,
+      });
+    } else {
+      console.warn('UID not provided, feedback not sent.');
+    }
 
     // Kembalikan hasil prediksi
     res.status(200).json({
-      message: 'Prediction successful and saved to history.',
+      message: 'Prediction successful.',
       result: predictionResult,
     });
   } catch (error) {
     // Tangani error
-    console.error(error);
+    console.error('Error during prediction:', error);
     res.status(500).json({
       message: 'Error during prediction.',
       error: error.message,
