@@ -3,10 +3,22 @@ const diagnoseModel = require('../models/diagnoseModel');
 //Predict Model Student
 const predictModelStudent = async (req, res) => {
   try {
+    // Ambil token dari header Authorization
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ message: 'Token is missing or invalid.' });
+    }
+
+    const token = authHeader.split(' ')[1]; // Ambil token setelah 'Bearer '
+
     // Pisahkan `uid` dari `req.body`
     const { uid, ...payload } = req.body;
 
-    // Validasi apakah payload kosong
+    // Validasi apakah `uid` dan `payload` ada
+    if (!uid) {
+      return res.status(400).json({ message: 'UID is required.' });
+    }
+
     if (!payload || Object.keys(payload).length === 0) {
       return res
         .status(400)
@@ -14,21 +26,20 @@ const predictModelStudent = async (req, res) => {
     }
 
     // Kirim data ke model untuk melakukan prediksi
-    const predictionResult = await diagnoseModel.predictModelStudent(payload);
+    const predictionResult = await diagnoseModel.predictModelStudent(
+      payload,
+      token
+    );
 
     const { feedback, probability, result } = predictionResult;
 
     // Kirim `uid` dan hasil prediksi ke `sendFeedback`
-    if (uid) {
-      await diagnoseModel.sendFeedback({
-        uid,
-        feedback,
-        probability,
-        result,
-      });
-    } else {
-      console.warn('UID not provided, feedback not sent.');
-    }
+    await diagnoseModel.sendFeedback({
+      uid,
+      feedback,
+      probability,
+      result,
+    });
 
     // Kembalikan hasil prediksi
     res.status(200).json({
@@ -40,17 +51,29 @@ const predictModelStudent = async (req, res) => {
     console.error('Error during prediction:', error);
     res.status(500).json({
       message: 'Error during prediction.',
-      error: error.message,
+      serverError: error.message,
     });
   }
 };
 
 const predictModelProfessional = async (req, res) => {
   try {
+    // Ambil token dari header Authorization
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ message: 'Token is missing or invalid.' });
+    }
+
+    const token = authHeader.split(' ')[1]; // Ambil token setelah 'Bearer '
+
     // Pisahkan `uid` dari `req.body`
     const { uid, ...payload } = req.body;
 
-    // Validasi apakah payload kosong
+    // Validasi apakah `uid` dan `payload` ada
+    if (!uid) {
+      return res.status(400).json({ message: 'UID is required.' });
+    }
+
     if (!payload || Object.keys(payload).length === 0) {
       return res
         .status(400)
@@ -59,22 +82,19 @@ const predictModelProfessional = async (req, res) => {
 
     // Kirim data ke model untuk melakukan prediksi
     const predictionResult = await diagnoseModel.predictModelProfessional(
-      payload
+      payload,
+      token
     );
 
     const { feedback, probability, result } = predictionResult;
 
     // Kirim `uid` dan hasil prediksi ke `sendFeedback`
-    if (uid) {
-      await diagnoseModel.sendFeedback({
-        uid,
-        feedback,
-        probability,
-        result,
-      });
-    } else {
-      console.warn('UID not provided, feedback not sent.');
-    }
+    await diagnoseModel.sendFeedback({
+      uid,
+      feedback,
+      probability,
+      result,
+    });
 
     // Kembalikan hasil prediksi
     res.status(200).json({
@@ -86,7 +106,7 @@ const predictModelProfessional = async (req, res) => {
     console.error('Error during prediction:', error);
     res.status(500).json({
       message: 'Error during prediction.',
-      error: error.message,
+      serverError: error.message,
     });
   }
 };
