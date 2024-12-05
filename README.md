@@ -16,38 +16,38 @@ This is a Node.js application built with Express, MySQL, Firebase, and other dep
 Follow these steps to get the project up and running:
 
 1. Clone the repository:
-   \`\`\`bash
+   ```bash
    git clone https://github.com/your-username/fixu-cloud-computing.git
-   \`\`\`
+   
 
 2. Navigate into the project directory:
-   \`\`\`bash
+   ```bash
    cd fixu-cloud-computing
-   \`\`\`
+   
 
 3. Install the dependencies:
-   \`\`\`bash
+   ```bash
    npm install
-   \`\`\`
+   
 
 4. Create a \`.env\` file to configure your environment variables. Example:
-   \`\`\`bash
+   
    DATABASE_HOST=your-database-host
    DATABASE_USER=your-database-user
    DATABASE_PASSWORD=your-database-password
    FIREBASE_CONFIG=your-firebase-config
    JWT_SECRET=your-jwt-secret
-   \`\`\`
+   
 
 5. Start the application:
    - In development mode (with hot reloading):
-     \`\`\`bash
+     ```bash
      npm run dev
-     \`\`\`
+     
    - In production mode:
-     \`\`\`bash
+     ```bash
      npm start
-     \`\`\`
+     
 
 ## Available Scripts
 
