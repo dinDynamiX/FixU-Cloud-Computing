@@ -7,9 +7,14 @@ const getAllNotes = (uid) => {
 };
 
 // Membuat Data Note
-const createNewNotes = (body) => {
+const createNewNotes = async (body) => {
   const SQLQuery = `INSERT INTO notes (uid, title, content) VALUES (?, ?, ?)`;
-  return db.execute(SQLQuery, [body.uid, body.title, body.content]);
+  const [result] = await db.execute(SQLQuery, [
+    body.uid,
+    body.title,
+    body.content,
+  ]);
+  return result.insertId;
 };
 
 // Mencari Data Note berdasarkan ID

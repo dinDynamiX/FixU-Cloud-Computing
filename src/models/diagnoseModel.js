@@ -7,6 +7,7 @@ const getAllFormStudent = () => {
 
   return db.execute(SQLQuery);
 };
+
 //API Model Predict Student
 const predictModelStudent = async (payload, token) => {
   try {
@@ -60,16 +61,23 @@ const predictModelProfessional = async (payload, token) => {
 };
 
 // Send Feedback
-const sendFeedback = (body) => {
+const sendFeedback = async (body) => {
   const SQLQuery = `INSERT INTO feedback (uid, feedback, probability, result)
                     VALUES (?, ?, ?, ?)`;
 
-  return db.execute(SQLQuery, [
+  const [result] = await db.execute(SQLQuery, [
     body.uid,
     body.feedback,
     body.probability,
     body.result,
   ]);
+
+  return result.insertId;
+};
+
+const findNoteById = (idPredict) => {
+  const SQLQuery = `SELECT * FROM feedback WHERE id = ?`;
+  return db.execute(SQLQuery, [idPredict]);
 };
 
 const getAllHistoryDiagnose = (uid) => {
@@ -78,6 +86,7 @@ const getAllHistoryDiagnose = (uid) => {
 };
 
 module.exports = {
+  findNoteById,
   getAllFormStudent,
   getAllHistoryDiagnose,
   sendFeedback,

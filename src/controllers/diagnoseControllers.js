@@ -34,17 +34,19 @@ const predictModelStudent = async (req, res) => {
     const { feedback, probability, result } = predictionResult;
 
     // Kirim `uid` dan hasil prediksi ke `sendFeedback`
-    await diagnoseModel.sendFeedback({
+    const newPredict = await diagnoseModel.sendFeedback({
       uid,
       feedback,
       probability,
       result,
     });
 
+    const [newPredictResult] = await diagnoseModel.findNoteById(newPredict);
+
     // Kembalikan hasil prediksi
     res.status(200).json({
       message: 'Prediction successful.',
-      result: predictionResult,
+      result: newPredictResult,
     });
   } catch (error) {
     // Tangani error
@@ -56,6 +58,7 @@ const predictModelStudent = async (req, res) => {
   }
 };
 
+//Predict Model Professional
 const predictModelProfessional = async (req, res) => {
   try {
     // Ambil token dari header Authorization
@@ -89,17 +92,19 @@ const predictModelProfessional = async (req, res) => {
     const { feedback, probability, result } = predictionResult;
 
     // Kirim `uid` dan hasil prediksi ke `sendFeedback`
-    await diagnoseModel.sendFeedback({
+    const newPredict = await diagnoseModel.sendFeedback({
       uid,
       feedback,
       probability,
       result,
     });
 
+    const [newPredictResult] = await diagnoseModel.findNoteById(newPredict);
+
     // Kembalikan hasil prediksi
     res.status(200).json({
       message: 'Prediction successful.',
-      result: predictionResult,
+      result: newPredictResult,
     });
   } catch (error) {
     // Tangani error
@@ -108,23 +113,6 @@ const predictModelProfessional = async (req, res) => {
       message: 'Error during prediction.',
       serverError: error.message,
     });
-  }
-};
-
-// Kirim Hasil Feedback
-const sendFeedback = async (req, res) => {
-  const { body } = req;
-  try {
-    await diagnoseModel.sendFeedback(body);
-
-    // Pastikan respons dikirim setelah berhasil
-    res.status(201).json({
-      message: 'Feedback saved successfully.',
-      data: body, // Pastikan ini berisi data yang relevan
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error saving feedback.', error });
   }
 };
 
@@ -151,7 +139,7 @@ const getAllHistory = async (req, res) => {
 };
 
 module.exports = {
-  sendFeedback,
+  // sendFeedback,
   getAllHistory,
   predictModelStudent,
   predictModelProfessional,

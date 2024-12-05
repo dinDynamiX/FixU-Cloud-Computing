@@ -38,10 +38,15 @@ const createNewNotes = async (req, res) => {
   }
 
   try {
-    await notesModel.createNewNotes(body);
+    // Simpan data dan dapatkan ID catatan baru
+    const newNoteId = await notesModel.createNewNotes(body);
+
+    // Ambil catatan yang baru saja disimpan
+    const [newNote] = await notesModel.findNoteById(newNoteId);
+
     res.status(201).json({
       message: 'Post notes success',
-      data: body,
+      data: newNote, // Kirim data catatan ke respon
     });
   } catch (error) {
     res.status(500).json({
@@ -56,6 +61,7 @@ const updateNote = async (req, res) => {
   const { body } = req;
 
   try {
+    // Cek apakah data dengan ID tersebut ada
     const [rows] = await notesModel.findNoteById(idNote);
 
     if (rows.length === 0) {
@@ -66,21 +72,24 @@ const updateNote = async (req, res) => {
 
     // Validasi: Tidak boleh ada nilai null
     const isNullValue = Object.values(body).some(
-      (value) => value === null || value === 0 || value === ''
+      (value) => value === null || value === ''
     );
 
     if (isNullValue) {
       return res.status(400).json({
-        message: 'Mohon kolom nya dilengkapi',
+        message: 'Mohon kolomnya dilengkapi',
       });
     }
 
     // Lakukan update jika lolos validasi
     await notesModel.updateNote(body, idNote);
 
+    // Ambil data terbaru dari database setelah di-update
+    const [updatedRows] = await notesModel.findNoteById(idNote);
+
     res.json({
       message: 'Update Note berhasil',
-      data: body,
+      data: updatedRows[0], // Menampilkan seluruh data yang baru saja di-update
     });
   } catch (error) {
     console.error('Error updating note:', error);
@@ -104,10 +113,16 @@ const deleteNote = async (req, res) => {
       });
     }
 
-    // Jika ada, lanjutkan dengan menghapus
+    // Simpan data yang akan dihapus
+    const deletedData = rows[0];
+
+    // Lanjutkan dengan menghapus catatan
     await notesModel.deleteNote(idNote);
+
+    // Kirim respon dengan data yang telah dihapus
     res.json({
-      message: 'Delete Note success',
+      message: 'Delete Note berhasil',
+      deletedData, // Mengirimkan data yang baru saja dihapus
     });
   } catch (error) {
     console.error('Error deleting note:', error);
