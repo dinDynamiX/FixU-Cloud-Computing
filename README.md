@@ -32,11 +32,11 @@ Follow these steps to get the project up and running:
 
 4. Create a \`.env\` file to configure your environment variables. Example:
    
-   DATABASE_HOST=your-database-host
-   DATABASE_USER=your-database-user
-   DATABASE_PASSWORD=your-database-password
-   FIREBASE_CONFIG=your-firebase-config
-   JWT_SECRET=your-jwt-secret
+   DATABASE_HOST=your-database-host \n
+   DATABASE_USER=your-database-user \n
+   DATABASE_PASSWORD=your-database-password \n
+   FIREBASE_CONFIG=your-firebase-config \n
+   JWT_SECRET=your-jwt-secret \n
    
 
 5. Start the application:
