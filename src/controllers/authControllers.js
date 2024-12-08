@@ -1,7 +1,8 @@
 const admin = require('../config/firebase');
-const jwt = require('jsonwebtoken');
+const { verifyIdToken } = require('../middleware/verifyIdToken');
+// const jwt = require('jsonwebtoken');
 
-const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+// const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const signup = async (req, res) => {
   const { fullname, email, whatsapp, password, confirm_password } = req.body;
@@ -42,46 +43,26 @@ const signup = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res
-      .status(400)
-      .json({ message: 'Email and password are required.' });
-  }
+  const token = req.headers.authorization?.split('Bearer ')[1];
 
   try {
-    const user = await admin.auth().getUserByEmail(email);
+    // Verifikasi token
+    const uid = await verifyIdToken(token);
+    const userRecord = await admin.auth().getUser(uid);
 
-    // Generate JWT token after successful login
-    const token = jwt.sign(
-      {
-        uid: user.uid,
-        email: user.email,
-        fullname: user.displayName,
-        whatsapp: user.customClaims?.whatsapp || null,
-      },
-      JWT_SECRET_KEY, // Secret key to sign JWT
-      { expiresIn: '5m' }
-    );
+    const userData = {
+      uid: userRecord.uid,
+      name: userRecord.displayName,
+      email: userRecord.email,
+    };
 
-    const expiresIn = Date.now() + 5 * 60 * 1000;
-
-    res.status(200).json({
-      message: 'Login successful.',
-      token, // send the generated JWT token
-      expiresIn: expiresIn,
-      user: {
-        uid: user.uid,
-        email: user.email,
-        fullname: user.displayName,
-        whatsapp: user.customClaims?.whatsapp || null,
-      },
+    res.status(200).send({
+      message: 'Token valid',
+      user: userData,
     });
   } catch (error) {
-    res
-      .status(401)
-      .json({ message: 'Invalid email or password.', error: error.message });
+    // Token tidak valid atau terjadi kesalahan
+    res.status(401).json({ message: 'Token is invalid or expired', error });
   }
 };
 
