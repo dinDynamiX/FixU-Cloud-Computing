@@ -11,6 +11,8 @@ const authenticate = require('./src/middleware/authentication');
 const notesRoutes = require('./src/routes/notesRoute');
 const diagnoseRoutes = require('./src/routes/diagnoseRoute');
 
+const quotesRoute = require('./src/routes/quotesRoute');
+
 app.use(middlewareLogRequest);
 app.use(express.json());
 
@@ -25,6 +27,8 @@ app.use('/predict', diagnoseRoutes);
 app.use('/history', authenticate, diagnoseRoutes);
 
 app.use('/auth', authRoutes);
+
+app.use('/quotes', quotesRoute);
 
 // Jalankan server
 app.listen(PORT, () => {
