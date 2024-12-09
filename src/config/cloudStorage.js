@@ -13,16 +13,3 @@ module.exports = { bucket };
 
 
 
-// * Test koneksi bucket * //
-
-// const bucketName = 'quotes_bucket';
-
-// // Tes akses bucket
-// (async () => {
-//   try {
-//     const [files] = await storage.bucket(bucketName).getFiles();
-//     console.log('Files in bucket:', files.map(file => file.name));
-//   } catch (error) {
-//     console.error('Error accessing bucket:', error);
-//   }
-// })();
