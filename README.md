@@ -1,10 +1,10 @@
-# Fixu Cloud Computing
+# **Fixu Cloud Computing**
 
 **Fixu Cloud Computing** is a Node.js application built with Express, MySQL, Firebase, and other robust dependencies to deliver comprehensive cloud computing services. Designed for cloud-based environments, the application provides features like authentication, database management, and API handling.
 
 ---
 
-## Features
+## **Features**
 
 - **Express**: A backend server framework for handling requests and routing.
 - **MySQL2**: MySQL database management for efficient data storage and retrieval.
@@ -15,7 +15,7 @@
 
 ---
 
-## Installation
+## **Installation**
 
 To set up the project locally, follow these steps:
 
@@ -57,7 +57,7 @@ JWT_SECRET=your-jwt-secret
 
 ---
 
-## Available Scripts
+## **Available Scripts**
 
 - **`npm start`**: Starts the application in production mode.
 - **`npm run dev`**: Starts the application in development mode with hot reloading using **nodemon**.
@@ -65,7 +65,7 @@ JWT_SECRET=your-jwt-secret
 
 ---
 
-## Dependencies
+## **Dependencies**
 
 ### Core Dependencies
 | Dependency       | Version  |
@@ -87,7 +87,7 @@ JWT_SECRET=your-jwt-secret
 
 ---
 
-## Future Enhancements
+## **Future Enhancements**
 - **Testing**: Implement a robust test suite using tools like Jest or Mocha.
 - **API Documentation**: Add Swagger/OpenAPI support for improved API documentation.
 - **Containerization**: Dockerize the application for seamless deployment.
@@ -95,7 +95,7 @@ JWT_SECRET=your-jwt-secret
 
 ---
 
-## Contributing
+## **Contributing**
 
 Contributions are welcome! If you'd like to improve this project, please:
 
