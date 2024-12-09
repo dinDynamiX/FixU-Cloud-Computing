@@ -86,20 +86,3 @@ JWT_SECRET=your-jwt-secret
 | **nodemon**       | ^3.1.7   |
 
 ---
-
-## **Future Enhancements**
-- **Testing**: Implement a robust test suite using tools like Jest or Mocha.
-- **API Documentation**: Add Swagger/OpenAPI support for improved API documentation.
-- **Containerization**: Dockerize the application for seamless deployment.
-- **Scalability**: Optimize for horizontal scaling with microservices architecture.
-
----
-
-## **Contributing**
-
-Contributions are welcome! If you'd like to improve this project, please:
-
-1. Fork the repository.
-2. Create a feature branch.
-3. Commit your changes.
-4. Open a pull request.
