@@ -13,7 +13,7 @@ const predictModelStudent = async (payload, token) => {
   try {
     console.log(token);
     const response = await axios.post(
-      'https://fixu-ml-service-1045437150026.asia-southeast2.run.app/predict/student',
+      process.env.STUDENT_PREDICT_URL,
       payload,
       {
         headers: {
@@ -39,7 +39,7 @@ const predictModelProfessional = async (payload, token) => {
   try {
     console.log(token);
     const response = await axios.post(
-      'https://fixu-ml-service-1045437150026.asia-southeast2.run.app/predict/professional',
+      process.env.PROFESSIONAL_PREDICT_URL,
       payload,
       {
         headers: {
