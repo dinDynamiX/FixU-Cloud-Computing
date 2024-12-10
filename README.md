@@ -12,6 +12,7 @@
 - **JWT Authentication**: Secure user authentication using JSON Web Tokens.
 - **Axios**: Simplifies HTTP requests for API communication.
 - **dotenv**: Loads environment variables for easier configuration management.
+- **Cloud Storage**: A reliable storage solution for saving images, supporting the quotes feature with seamless integration and accessibility.
 
 ---
 
@@ -48,7 +49,7 @@ JWT_SECRET=your-jwt-secret
 ### 5. Start the Application
 - **Development Mode** (with hot reloading):
   ```bash
-  npm run dev
+  npm run start-dev
   ```
 - **Production Mode**:
   ```bash
@@ -60,7 +61,7 @@ JWT_SECRET=your-jwt-secret
 ## **Available Scripts**
 
 - **`npm start`**: Starts the application in production mode.
-- **`npm run dev`**: Starts the application in development mode with hot reloading using **nodemon**.
+- **`npm run start-dev`**: Starts the application in development mode with hot reloading using **nodemon**.
 - **`npm test`**: Placeholder for running tests (to be implemented).
 
 ---
@@ -76,6 +77,7 @@ JWT_SECRET=your-jwt-secret
 | **firebase-admin**| ^13.0.1  |
 | **jsonwebtoken**  | ^9.0.2   |
 | **mysql2**        | ^3.11.4  |
+| **cloud storage** | ^7.14.0  |
 
 ### Development Dependencies
 | Dependency       | Version  |
