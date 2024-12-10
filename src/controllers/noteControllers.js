@@ -1,25 +1,24 @@
+const { verifyIdToken } = require('../middleware/verifyIdToken.js');
 const notesModel = require('../models/notesModel.js');
 
 const getAllNotes = async (req, res) => {
-  try {
-    const uid = req.user?.uid; // uid diambil dari middleware
-    console.log('User UID:', uid); // Debug UID
-    if (!uid) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
+  const token = req.headers.authorization?.split('Bearer ')[1];
+  console.log(token);
 
-    const [data] = await notesModel.getAllNotes(uid);
-
-    res.status(200).json({
-      message: 'Get History Success',
-      data: data,
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: 'Server Error',
-      serverMessage: error.message,
+  if (!token) {
+    return res.status(400).json({
+      message: 'Token is missing',
     });
   }
+
+  const uid = await verifyIdToken(token);
+  console.log(uid);
+
+  const [note] = await notesModel.getAllNotes(uid);
+
+  res.status(200).send({
+    data: note,
+  });
 };
 
 const addNewNote = (req, res) => {
@@ -29,24 +28,39 @@ const addNewNote = (req, res) => {
 };
 
 const createNewNotes = async (req, res) => {
-  const { body } = req;
+  const token = req.headers.authorization?.split('Bearer ')[1];
 
-  if (!body.uid || !body.title || !body.content) {
+  if (!token) {
+    return res.status(400).json({
+      message: 'Token is missing',
+    });
+  }
+
+  const uid = await verifyIdToken(token);
+
+  const { title, content } = req.body;
+
+  // Validasi untuk memastikan title dan content tidak undefined atau kosong
+  if (!title || !content) {
     return res.status(400).json({
       message: 'Mohon lengkapi data input',
     });
   }
 
-  try {
-    // Simpan data dan dapatkan ID catatan baru
-    const newNoteId = await notesModel.createNewNotes(body);
+  console.log('uid:', uid);
+  console.log('title:', title);
+  console.log('content:', content);
 
-    // Ambil catatan yang baru saja disimpan
-    const [newNote] = await notesModel.findNoteById(newNoteId);
+  try {
+    // Memastikan uid, title, dan content didefinisikan dengan benar
+    const newNoteId = await notesModel.createNewNotes(uid, title, content);
+
+    // Ambil data note yang baru disimpan berdasarkan ID
+    const [newNoteResult] = await notesModel.findNoteById(newNoteId);
 
     res.status(201).json({
       message: 'Post notes success',
-      data: newNote, // Kirim data catatan ke respon
+      result: newNoteResult,
     });
   } catch (error) {
     res.status(500).json({
@@ -57,42 +71,50 @@ const createNewNotes = async (req, res) => {
 };
 
 const updateNote = async (req, res) => {
+  const token = req.headers.authorization?.split('Bearer ')[1];
+
+  if (!token) {
+    return res.status(400).json({
+      message: 'Token is missing',
+    });
+  }
+
+  const uid = await verifyIdToken(token);
+
+  const { title, content } = req.body;
   const { idNote } = req.params;
-  const { body } = req;
+
+  // Validasi untuk memastikan title dan content tidak undefined atau kosong
+  if (!title || !content) {
+    return res.status(400).json({
+      message: 'Mohon lengkapi data input',
+    });
+  }
+
+  console.log('uid:', uid);
+  console.log('title:', title);
+  console.log('content:', content);
+  console.log('idNote:', idNote);
 
   try {
-    // Cek apakah data dengan ID tersebut ada
-    const [rows] = await notesModel.findNoteById(idNote);
+    // Update data note
+    const result = await notesModel.updateNote({ title, content }, idNote);
 
-    if (rows.length === 0) {
+    // Periksa apakah ada baris yang terpengaruh
+    if (result.affectedRows === 0) {
       return res.status(404).json({
-        message: 'Note dengan ID tersebut tidak ditemukan',
+        message: 'Note not found or no changes made',
       });
     }
 
-    // Validasi: Tidak boleh ada nilai null
-    const isNullValue = Object.values(body).some(
-      (value) => value === null || value === ''
-    );
+    // Mengambil data note yang sudah diperbarui
+    const [updatedNote] = await notesModel.findNoteById(idNote);
 
-    if (isNullValue) {
-      return res.status(400).json({
-        message: 'Mohon kolomnya dilengkapi',
-      });
-    }
-
-    // Lakukan update jika lolos validasi
-    await notesModel.updateNote(body, idNote);
-
-    // Ambil data terbaru dari database setelah di-update
-    const [updatedRows] = await notesModel.findNoteById(idNote);
-
-    res.json({
-      message: 'Update Note berhasil',
-      data: updatedRows[0], // Menampilkan seluruh data yang baru saja di-update
+    res.status(200).json({
+      message: 'Note updated successfully',
+      result: updatedNote,
     });
   } catch (error) {
-    console.error('Error updating note:', error);
     res.status(500).json({
       message: 'Gagal update note',
       serverMessage: error.message,
@@ -101,31 +123,31 @@ const updateNote = async (req, res) => {
 };
 
 const deleteNote = async (req, res) => {
+  const token = req.headers.authorization?.split('Bearer ')[1];
+
+  if (!token) {
+    return res.status(400).json({
+      message: 'Token is missing',
+    });
+  }
+
   const { idNote } = req.params;
 
   try {
-    // Periksa apakah catatan dengan idNote ada di database
-    const [rows] = await notesModel.findNoteById(idNote);
+    // Menghapus note berdasarkan id
+    const result = await notesModel.deleteNote(idNote);
 
-    if (rows.length === 0) {
+    // Memeriksa apakah ada baris yang terpengaruh
+    if (result.affectedRows === 0) {
       return res.status(404).json({
-        message: 'Note dengan ID tersebut tidak ditemukan',
+        message: 'Note not found',
       });
     }
 
-    // Simpan data yang akan dihapus
-    const deletedData = rows[0];
-
-    // Lanjutkan dengan menghapus catatan
-    await notesModel.deleteNote(idNote);
-
-    // Kirim respon dengan data yang telah dihapus
-    res.json({
-      message: 'Delete Note berhasil',
-      deletedData, // Mengirimkan data yang baru saja dihapus
+    res.status(200).json({
+      message: 'Note deleted successfully',
     });
   } catch (error) {
-    console.error('Error deleting note:', error);
     res.status(500).json({
       message: 'Gagal menghapus note',
       serverMessage: error.message,

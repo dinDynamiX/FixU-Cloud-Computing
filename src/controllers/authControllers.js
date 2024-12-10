@@ -44,10 +44,19 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   const token = req.headers.authorization?.split('Bearer ')[1];
+  console.log(token);
+
+  if (!token) {
+    return res.status(400).json({
+      message: 'Token is missing',
+    });
+  }
 
   try {
     // Verifikasi token
     const uid = await verifyIdToken(token);
+    console.log(uid);
+
     const userRecord = await admin.auth().getUser(uid);
 
     const userData = {

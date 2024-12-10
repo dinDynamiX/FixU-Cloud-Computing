@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
   res.send('Welcome to Fixu API');
 });
 
-app.use('/notes', authenticate, notesRoutes);
+app.use('/notes', notesRoutes);
 app.use('/features', diagnoseRoutes);
 app.use('/predict', diagnoseRoutes);
 app.use('/history', authenticate, diagnoseRoutes);

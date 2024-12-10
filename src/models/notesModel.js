@@ -7,13 +7,11 @@ const getAllNotes = (uid) => {
 };
 
 // Membuat Data Note
-const createNewNotes = async (body) => {
+const createNewNotes = async (uid, title, content) => {
   const SQLQuery = `INSERT INTO notes (uid, title, content) VALUES (?, ?, ?)`;
-  const [result] = await db.execute(SQLQuery, [
-    body.uid,
-    body.title,
-    body.content,
-  ]);
+  const [result] = await db.execute(SQLQuery, [uid, title, content]);
+
+  // Mengembalikan ID dari note yang baru dibuat
   return result.insertId;
 };
 
