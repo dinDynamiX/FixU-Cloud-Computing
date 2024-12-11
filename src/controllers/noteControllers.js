@@ -134,6 +134,16 @@ const deleteNote = async (req, res) => {
   const { idNote } = req.params;
 
   try {
+    // Ambil data note sebelum dihapus
+    const [noteToDelete] = await notesModel.findNoteById(idNote);
+
+    // Jika note tidak ditemukan, kembalikan respon 404
+    if (!noteToDelete) {
+      return res.status(404).json({
+        message: 'Note not found',
+      });
+    }
+
     // Menghapus note berdasarkan id
     const result = await notesModel.deleteNote(idNote);
 
@@ -146,6 +156,7 @@ const deleteNote = async (req, res) => {
 
     res.status(200).json({
       message: 'Note deleted successfully',
+      deletedData: noteToDelete, // Menampilkan data yang baru saja dihapus
     });
   } catch (error) {
     res.status(500).json({

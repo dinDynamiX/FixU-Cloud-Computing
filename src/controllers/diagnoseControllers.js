@@ -5,15 +5,19 @@ const diagnoseModel = require('../models/diagnoseModel');
 const predictModelStudent = async (req, res) => {
   try {
     // Ambil token dari header Authorization
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ message: 'Token is missing or invalid.' });
+    const token = req.headers.authorization?.split('Bearer ')[1];
+
+    if (!token) {
+      return res.status(400).json({
+        message: 'Token is missing',
+      });
     }
 
-    const token = authHeader.split(' ')[1]; // Ambil token setelah 'Bearer '
+    const uid = await verifyIdToken(token);
 
-    // Pisahkan `uid` dari `req.body`
-    const { uid, ...payload } = req.body;
+    const payload = req.body;
+
+    console.log(payload);
 
     // Validasi apakah `uid` dan `payload` ada
     if (!uid) {
@@ -123,10 +127,16 @@ const predictModelProfessional = async (req, res) => {
 
 const getAllHistory = async (req, res) => {
   try {
-    const uid = req.user?.uid;
-    if (!uid) {
-      return res.status(401).json({ message: 'Unauthorized' });
+    // Ambil token dari header Authorization
+    const token = req.headers.authorization?.split('Bearer ')[1];
+
+    if (!token) {
+      return res.status(400).json({
+        message: 'Token is missing',
+      });
     }
+
+    const uid = await verifyIdToken(token);
 
     const [data] = await diagnoseModel.getAllHistoryDiagnose(uid);
     console.log(uid);
