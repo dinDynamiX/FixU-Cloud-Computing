@@ -50,11 +50,11 @@ BUCKET_NAME=your-bucket-name
 ```
 
 ### 5. Start the Application
-- **Development Mode** (with hot reloading):
+**Development Mode** (with hot reloading):
   ```bash
   npm run start-dev
   ```
-- **Production Mode**:
+**Production Mode**:
   ```bash
   npm start
   ```
