@@ -3,10 +3,10 @@ require('dotenv').config();
 const express = require('express');
 const middlewareLogRequest = require('./src/middleware/logs');
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT;
 
 const authRoutes = require('./src/routes/authRoute');
-const authenticate = require('./src/middleware/authentication');
+// const authenticate = require('./src/middleware/authentication');
 
 const notesRoutes = require('./src/routes/notesRoute');
 const diagnoseRoutes = require('./src/routes/diagnoseRoute');
@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 app.use('/notes', notesRoutes);
 app.use('/features', diagnoseRoutes);
 app.use('/predict', diagnoseRoutes);
-app.use('/history', authenticate, diagnoseRoutes);
+app.use('/history', diagnoseRoutes);
 
 app.use('/auth', authRoutes);
 
