@@ -44,6 +44,9 @@ DATABASE_USER=your-database-user
 DATABASE_PASSWORD=your-database-password
 FIREBASE_CONFIG=your-firebase-config
 JWT_SECRET=your-jwt-secret
+STUDENT_PREDICT_URL=your-url-model-student
+PROFESSIONAL_PREDICT_URL=your-url-model-professional
+BUCKET_NAME=your-bucket-name
 ```
 
 ### 5. Start the Application
