@@ -1,8 +1,5 @@
 const admin = require('../config/firebase');
 const { verifyIdToken } = require('../middleware/verifyIdToken');
-// const jwt = require('jsonwebtoken');
-
-// const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const signup = async (req, res) => {
   const { fullname, email, whatsapp, password, confirm_password } = req.body;

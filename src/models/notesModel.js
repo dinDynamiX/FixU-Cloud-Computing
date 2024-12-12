@@ -11,13 +11,13 @@ const createNewNotes = async (uid, title, content) => {
   const SQLQuery = `INSERT INTO notes (uid, title, content) VALUES (?, ?, ?)`;
   const [result] = await db.execute(SQLQuery, [uid, title, content]);
 
-  // Mengembalikan ID dari note yang baru dibuat
   return result.insertId;
 };
 
 // Mencari Data Note berdasarkan ID
 const findNoteById = (idNote) => {
   const SQLQuery = `SELECT * FROM notes WHERE id = ?`;
+  
   return db.execute(SQLQuery, [idNote]);
 };
 

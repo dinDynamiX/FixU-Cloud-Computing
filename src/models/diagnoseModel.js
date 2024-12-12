@@ -21,9 +21,8 @@ const predictModelStudent = async (payload, token) => {
         },
       }
     );
-    return response.data; // Kembalikan data dari API eksternal
+    return response.data; 
   } catch (error) {
-    // Log error respons dari API eksternal
     console.error(
       'Error fetching prediction:',
       error.response ? error.response.data : error.message
@@ -47,9 +46,8 @@ const predictModelProfessional = async (payload, token) => {
         },
       }
     );
-    return response.data; // Kembalikan data dari API eksternal
+    return response.data; 
   } catch (error) {
-    // Log error respons dari API eksternal
     console.error(
       'Error fetching prediction:',
       error.response ? error.response.data : error.message
@@ -91,7 +89,5 @@ module.exports = {
   getAllHistoryDiagnose,
   sendFeedback,
   predictModelStudent,
-  // storePredictionFeedbackStudent,
-
   predictModelProfessional,
 };

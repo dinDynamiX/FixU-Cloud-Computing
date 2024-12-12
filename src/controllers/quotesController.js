@@ -29,7 +29,6 @@ setInterval(() => {
   }
 }, 30000);
 
-// Muat daftar gambar saat aplikasi dijalankan
 fetchImagesFromBucket();
 
 module.exports = { getCurrentImage };

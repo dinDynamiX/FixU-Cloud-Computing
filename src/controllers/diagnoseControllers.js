@@ -4,7 +4,6 @@ const diagnoseModel = require('../models/diagnoseModel');
 //Predict Model Student
 const predictModelStudent = async (req, res) => {
   try {
-    // Ambil token dari header Authorization
     const token = req.headers.authorization?.split('Bearer ')[1];
 
     if (!token) {
@@ -19,7 +18,7 @@ const predictModelStudent = async (req, res) => {
 
     console.log(payload);
 
-    // Validasi apakah `uid` dan `payload` ada
+    // Validasi `uid` dan `payload`
     if (!uid) {
       return res.status(400).json({ message: 'UID is required.' });
     }
@@ -30,7 +29,6 @@ const predictModelStudent = async (req, res) => {
         .json({ message: 'Data is required for prediction.' });
     }
 
-    // Kirim data ke model untuk melakukan prediksi
     const predictionResult = await diagnoseModel.predictModelStudent(
       payload,
       token
@@ -38,7 +36,6 @@ const predictModelStudent = async (req, res) => {
 
     const { feedback, probability, result } = predictionResult;
 
-    // Kirim `uid` dan hasil prediksi ke `sendFeedback`
     const newPredict = await diagnoseModel.sendFeedback({
       uid,
       feedback,
@@ -48,13 +45,11 @@ const predictModelStudent = async (req, res) => {
 
     const [newPredictResult] = await diagnoseModel.findNoteById(newPredict);
 
-    // Kembalikan hasil prediksi
     res.status(200).json({
       message: 'Prediction successful.',
       result: newPredictResult,
     });
   } catch (error) {
-    // Tangani error
     console.error('Error during prediction:', error);
     res.status(500).json({
       message: 'Error during prediction.',
@@ -66,7 +61,6 @@ const predictModelStudent = async (req, res) => {
 //Predict Model Professional
 const predictModelProfessional = async (req, res) => {
   try {
-    // Ambil token dari header Authorization
     const token = req.headers.authorization?.split('Bearer ')[1];
 
     if (!token) {
@@ -81,7 +75,7 @@ const predictModelProfessional = async (req, res) => {
 
     console.log(payload);
 
-    // Validasi apakah `uid` dan `payload` ada
+    // Validasi`uid` dan `payload`
     if (!uid) {
       return res.status(400).json({ message: 'UID is required.' });
     }
@@ -92,7 +86,6 @@ const predictModelProfessional = async (req, res) => {
         .json({ message: 'Data is required for prediction.' });
     }
 
-    // Kirim data ke model untuk melakukan prediksi
     const predictionResult = await diagnoseModel.predictModelProfessional(
       payload,
       token
@@ -100,7 +93,6 @@ const predictModelProfessional = async (req, res) => {
 
     const { feedback, probability, result } = predictionResult;
 
-    // Kirim `uid` dan hasil prediksi ke `sendFeedback`
     const newPredict = await diagnoseModel.sendFeedback({
       uid,
       feedback,
@@ -110,13 +102,11 @@ const predictModelProfessional = async (req, res) => {
 
     const [newPredictResult] = await diagnoseModel.findNoteById(newPredict);
 
-    // Kembalikan hasil prediksi
     res.status(200).json({
       message: 'Prediction successful.',
       result: newPredictResult,
     });
   } catch (error) {
-    // Tangani error
     console.error('Error during prediction:', error);
     res.status(500).json({
       message: 'Error during prediction.',
@@ -127,7 +117,6 @@ const predictModelProfessional = async (req, res) => {
 
 const getAllHistory = async (req, res) => {
   try {
-    // Ambil token dari header Authorization
     const token = req.headers.authorization?.split('Bearer ')[1];
 
     if (!token) {
@@ -154,7 +143,6 @@ const getAllHistory = async (req, res) => {
 };
 
 module.exports = {
-  // sendFeedback,
   getAllHistory,
   predictModelStudent,
   predictModelProfessional,

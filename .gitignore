@@ -1,22 +1,11 @@
 .env
-.env.example
-Dockerfile
-
+package-lock.json
 /node_modules/
 
-# Firebase service account credentials (or any other service account keys)
+# Firebase service account credentials
 serviceAccountKey.json
 StorageServiceKey.json
 
 # Logs
 npm-debug.log*
 
-# OS generated files
-.DS_Store
-Thumbs.db
-
-# IDE files
-.idea/
-.vscode/
-
-package-lock.json
