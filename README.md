@@ -42,7 +42,7 @@ Create a `.env` file in the root directory and add the following configuration:
 DATABASE_HOST=your-database-host
 DATABASE_USER=your-database-user
 DATABASE_PASSWORD=your-database-password
-FIREBASE_CONFIG=your-firebase-config
+DB_NAME=your-database-name
 JWT_SECRET=your-jwt-secret
 STUDENT_PREDICT_URL=your-url-model-student
 PROFESSIONAL_PREDICT_URL=your-url-model-professional
